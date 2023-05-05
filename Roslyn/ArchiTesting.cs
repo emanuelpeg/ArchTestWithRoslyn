@@ -1,4 +1,3 @@
-using Hx.ArchTests.Roslyn.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -23,15 +22,19 @@ public class ArchiTesting
                          }";
 
         var nodeRoot = GetNodeRoot(program);
-        var classes = nodeRoot.DescendantNodes().OfType<ClassDeclarationSyntax>()
-            .Where(clazz => clazz.Identifier.ToString().EndsWith("Service")
+        var classes = nodeRoot.DescendantNodes()
+            .OfType<ClassDeclarationSyntax>()
+            .Where(clazz => clazz.Identifier
+                                .ToString().EndsWith("Service")
                             && clazz.DescendantNodes()
-                                .OfType<MethodDeclarationSyntax>().Any(method => method.ParameterList.Parameters.Any(
-                                    parameter => parameter.Identifier.ToString().EndsWith("DTO")
+                                .OfType<MethodDeclarationSyntax>()
+                                .Any(method => method.ParameterList.Parameters
+                                    .Any(
+                                    parameter => !parameter.Identifier.ToString().EndsWith("DTO")
                                 )));
         
         // Assert
-        Assert.IsTrue(!classes.Any());
+        Assert.IsTrue(classes.Any());
     }
     
     

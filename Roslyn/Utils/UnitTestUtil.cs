@@ -1,6 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Runtime.InteropServices;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using SyntaxTree = Microsoft.CodeAnalysis.SyntaxTree;
 
 namespace Hx.ArchTests.Roslyn.Utils
 {
@@ -11,7 +11,7 @@ namespace Hx.ArchTests.Roslyn.Utils
         
         public static CSharpCompilation getCompilation(SyntaxNode node)
         {
-            var directory = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory();
+            var directory = RuntimeEnvironment.GetRuntimeDirectory();
             var defaultReferences = Directory.GetFiles(directory).Where(s => s.EndsWith(".dll"))
                 .Select(s => MetadataReference.CreateFromFile(s));
 
